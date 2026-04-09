@@ -1,1 +1,87 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"/><link rel="icon" type="image/png" href="/logo-specialwash-icon-black.png?v=8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="SpecialWash - Gestión de talleres y flujo de trabajo"/><link rel="apple-touch-icon" href="/logo-specialwash-icon-black.png?v=8"/><link rel="manifest" href="/manifest.json"/><title>SpecialWash</title><script defer="defer" src="/static/js/main.f8a7c3a9.js"></script><link href="/static/css/main.481d4260.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="utf-8"/>
+	<link rel="icon" type="image/png" href="/logo-specialwash-icon-black.png?v=8"/>
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
+	<meta name="theme-color" content="#000000"/>
+	<meta name="description" content="SpecialWash - Gestión de talleres y flujo de trabajo"/>
+	<link rel="apple-touch-icon" href="/logo-specialwash-icon-black.png?v=8"/>
+	<link rel="manifest" href="/manifest.json"/>
+	<title>SpecialWash</title>
+	<script defer="defer" src="/static/js/main.f8a7c3a9.js"></script>
+	<link href="/static/css/main.481d4260.css" rel="stylesheet">
+	<style>
+		body.sw-home-clean .sw-home-tag {
+			display: none !important;
+		}
+
+		body.sw-home-clean .sw-home-wrapper .row.g-3.g-lg-4 > div:nth-child(n+5) {
+			display: none !important;
+		}
+
+		body.sw-home-clean .sw-home-section {
+			border-radius: 14px !important;
+			padding: 1rem !important;
+			box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14) !important;
+		}
+
+		body.sw-home-clean .sw-home-section-subtitle,
+		body.sw-home-clean .sw-home-link-detail {
+			display: none !important;
+		}
+
+		body.sw-home-clean .sw-home-links .sw-home-link-item:nth-child(n+2) {
+			display: none !important;
+		}
+
+		body.sw-home-clean .sw-home-section-head {
+			margin-bottom: 0.65rem !important;
+		}
+
+		body.sw-home-clean .sw-home-link-item {
+			padding: 0.7rem 0.85rem !important;
+			border-radius: 12px !important;
+		}
+
+		body.sw-home-clean .sw-home-link-main {
+			font-size: 1.02rem !important;
+			font-weight: 700 !important;
+		}
+	</style>
+</head>
+<body>
+	<noscript>You need to enable JavaScript to run this app.</noscript>
+	<div id="root"></div>
+	<script>
+		(function () {
+			function isHomeRoute() {
+				return location.pathname === "/" || location.pathname === "";
+			}
+
+			function applyHomeCleanMode() {
+				document.body.classList.toggle("sw-home-clean", isHomeRoute());
+			}
+
+			["pushState", "replaceState"].forEach(function (method) {
+				var original = history[method];
+				history[method] = function () {
+					var result = original.apply(this, arguments);
+					window.dispatchEvent(new Event("sw-route-change"));
+					return result;
+				};
+			});
+
+			var observer = new MutationObserver(function () {
+				window.requestAnimationFrame(applyHomeCleanMode);
+			});
+
+			window.addEventListener("load", applyHomeCleanMode);
+			window.addEventListener("popstate", applyHomeCleanMode);
+			window.addEventListener("sw-route-change", applyHomeCleanMode);
+			observer.observe(document.documentElement, { childList: true, subtree: true });
+			setInterval(applyHomeCleanMode, 1500);
+		})();
+	</script>
+</body>
+</html>
