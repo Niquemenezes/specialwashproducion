@@ -1,0 +1,16 @@
+.last_backup_dir
+*.tar.gz
+
+# Python virtual environments
+**/venv/
+**/.venv/
+**/.venv_local/
+
+# Python caches
+**/__pycache__/
+**/*.pyc
+
+# Environment files (secrets)
+**/.env
+**/.env.*
+!**/.env.example
