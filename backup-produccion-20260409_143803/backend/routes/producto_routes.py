@@ -66,6 +66,13 @@ def _parse_int_or_none(value):
         return None
 
 
+def _parse_int_or_default(value, default=0):
+    parsed = _parse_int_or_none(value)
+    if parsed is None:
+        return default
+    return parsed
+
+
 def _parse_datetime_or_none(value):
     if value is None or value == "":
         return None
@@ -134,8 +141,8 @@ def productos_create():
         nombre=data.get("nombre"),
         categoria=data.get("categoria"),
         codigo_barras=codigo_barras,
-        stock_minimo=int(data.get("stock_minimo", 0)),
-        stock_actual=int(data.get("stock_actual", 0)),
+        stock_minimo=_parse_int_or_default(data.get("stock_minimo"), default=0),
+        stock_actual=_parse_int_or_default(data.get("stock_actual"), default=0),
         pedido_en_curso=_parse_bool(data.get("pedido_en_curso"), default=False),
         pedido_fecha=_parse_datetime_or_none(data.get("pedido_fecha")),
         pedido_cantidad=_parse_int_or_none(data.get("pedido_cantidad")),
@@ -193,8 +200,8 @@ def productos_update(pid):
 
     p.nombre = data.get("nombre", p.nombre)
     p.categoria = data.get("categoria", p.categoria)
-    p.stock_minimo = int(data.get("stock_minimo", p.stock_minimo))
-    p.stock_actual = int(data.get("stock_actual", p.stock_actual))
+    p.stock_minimo = _parse_int_or_default(data.get("stock_minimo"), default=p.stock_minimo)
+    p.stock_actual = _parse_int_or_default(data.get("stock_actual"), default=p.stock_actual)
 
     if "pedido_en_curso" in data:
         p.pedido_en_curso = _parse_bool(data.get("pedido_en_curso"), default=False)
